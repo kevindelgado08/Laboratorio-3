@@ -5,11 +5,10 @@ static const byte Volt_2 = 1;
 static const byte Volt_3 = 2;
 static const byte Volt_4 = 3;
 static const byte ledPin = 13;
-
-static const byte V_inicial = 0;
+static const byte SerialPin = 12;
 
 static PCD8544 lcd;
-
+int Habilitar_Datos;
 float r1 = 1000000;
 float r2 = 263150;
 
@@ -18,9 +17,12 @@ void setup() {
   Serial.begin(9600);
 
   pinMode(ledPin, OUTPUT);
+  pinMode(SerialPin, INPUT);
+
 }
 
 void loop() {
+
   lcd.clear();
   //Tensiones en DC
   //Voltimetro #1
@@ -33,10 +35,7 @@ void loop() {
   lcd.print(" V ");
   // Mostrar los valores en el puerto serial de salida:
 
-  Serial.print(" V1: ");
-  Serial.print(r_volt_1);
-  Serial.print(" V ");
-  Serial.println();
+  
 
   //Voltimetro #2
   float voltimetro_2 = (analogRead(Volt_2) * 5) / 1023.0;
@@ -47,12 +46,8 @@ void loop() {
   lcd.print(r_volt_2);
   lcd.print(" V ");
 
-  // Mostrar los valores en el puerto serial de salida:
-  Serial.print(" V2: ");
-  Serial.print(r_volt_2);
-  Serial.print(" V ");
-  Serial.println();
-
+  
+  
   //Voltimetro #3
   float voltimetro_3 = (analogRead(Volt_3) * 5) / 1023.0;
   float r_volt_3 = (voltimetro_3 / (r2 / (r1 + r2)));
@@ -63,12 +58,7 @@ void loop() {
   lcd.print(" V ");
 
   // Mostrar los valores en el puerto serial de salida:
-  Serial.print(" V3: ");
-  Serial.print(r_volt_3);
-  Serial.print(" V ");
-  Serial.println();
-
-
+  
   //Voltimetro #4
   float voltimetro_4 = (analogRead(Volt_4) * 5) / 1023.0;
   float r_volt_4 = (voltimetro_4 / (r2 / (r1 + r2)));
@@ -78,12 +68,39 @@ void loop() {
   lcd.print(r_volt_4);
   lcd.print(" V ");
   // Mostrar los valores en el puerto serial de salida:
-  Serial.print(" V4: ");
-  Serial.print(r_volt_4);
-  Serial.print(" V ");
-  Serial.println();
+  
   delay(1000);
+  Habilitar_Datos = digitalRead(SerialPin);
+  
+  if(Habilitar_Datos == HIGH)
+  {
+    // Mostrar los valores en el puerto serial de salida:
+    Serial.print(" V1: ");
+    Serial.print(r_volt_1);
+    Serial.print(" V ");
+    Serial.println();
 
+    Serial.print(" V2: ");
+    Serial.print(r_volt_2);
+    Serial.print(" V ");
+    Serial.println();
+
+    Serial.print(" V3: ");
+    Serial.print(r_volt_3);
+    Serial.print(" V ");
+    Serial.println();
+
+    Serial.print(" V4: ");
+    Serial.print(r_volt_4);
+    Serial.print(" V ");
+    Serial.println();
+
+
+  }
+  else
+  {
+    ;
+  }
   if (((r_volt_1> 20) | (r_volt_2> 20) | (r_volt_3> 20) | (r_volt_4 > 20)) )  //no creo que funcione pero pa probar
   {
     digitalWrite(ledPin, HIGH);

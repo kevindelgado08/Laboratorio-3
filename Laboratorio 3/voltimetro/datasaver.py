@@ -19,6 +19,7 @@ try:
         for c in ser.read():
             c=chr(c)
             print(c, end= "")
+            f.write(c)
 except KeyboardInterrupt:
     print("\nProgram interrupted by user.")
 
