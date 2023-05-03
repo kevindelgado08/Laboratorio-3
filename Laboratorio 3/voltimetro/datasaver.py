@@ -21,7 +21,7 @@ try:
             print(c, end= "")
             f.write(c)
 except KeyboardInterrupt:
-    print("\nProgram interrupted by user.")
+    print("\nInterrupción de Programa debido al usuario.")
 
 finally:
     ser.close()
